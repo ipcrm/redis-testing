@@ -35,8 +35,8 @@
      stage('k8s') {
        steps{
          withKubeConfig(
-           clusterName: env.K8_CLUSTER_NAME
-           contextName: env.K8_CLUSTER_CONTEXT
+           clusterName: env.K8_CLUSTER_NAME,
+           contextName: env.K8_CLUSTER_CONTEXT,
            credentialsId: 'k8s-build-robot-token',
            namespace: '',
            serverUrl: env.K8_SERVER_URL) {
