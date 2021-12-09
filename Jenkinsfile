@@ -13,15 +13,16 @@
        checkout scm
      }
      stage('build and push') {
-       tag = env.BUILD_ID
-       def customImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}")
-       // customImage.push()
+       script {
+         def customImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}")
+         //customImage.push()
+       }
      }
      stage('Scan') {
        steps {
            sh "curl -L https://github.com/lacework/lacework-vulnerability-scanner/releases/latest/download/lw-scanner-linux-amd64 -o lw-scanner"
            sh "chmod +x lw-scanner"
-           sh "./lw-scanner image evaluate ${IMAGE_NAME} ${tag} --build-id ${BUILD_ID} --build-plan ${JOB_NAME} --save"
+           sh "./lw-scanner image evaluate ${IMAGE_NAME} ${BUILD_ID} --build-id ${BUILD_ID} --build-plan ${JOB_NAME} --save"
        }
      }
      stage('k8s') {
