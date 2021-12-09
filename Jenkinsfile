@@ -7,7 +7,7 @@
      LW_ACCOUNT_NAME = credentials('lw-account-name')
      K8_CLUSTER_NAME = credentials('k8s-cluster-name')
      K8_CLUSTER_CONTEXT = credentials('k8s-context-name')
-     K8_SERVER_URL = credentials('k8-server-url')
+     K8_SERVER_URL = credentials('k8s-server-url')
      IMAGE_NAME = "detcaccounts/redis"
    }
 
