@@ -10,12 +10,16 @@
 
    stages {
      stage('checkout') {
-       checkout scm
+       steps {
+         checkout scm
+       }
      }
      stage('build and push') {
-       script {
-         def customImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}")
-         //customImage.push()
+       steps {
+         script {
+           def customImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}")
+           //customImage.push()
+         }
        }
      }
      stage('Scan') {
