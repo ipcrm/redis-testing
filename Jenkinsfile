@@ -5,9 +5,9 @@
    environment {
      LW_ACCESS_TOKEN = credentials('lw-access-token')
      LW_ACCOUNT_NAME = credentials('lw-account-name')
-     K8_CLUSTER_NAME = credentials('k8s-cluster-name')
-     K8_CLUSTER_CONTEXT = credentials('k8s-context-name')
-     K8_SERVER_URL = credentials('k8s-server-url')
+     K8S_CLUSTER_NAME = credentials('k8s-cluster-name')
+     K8S_CLUSTER_CONTEXT = credentials('k8s-context-name')
+     K8S_SERVER_URL = credentials('k8s-server-url')
      IMAGE_NAME = "detcaccounts/redis"
    }
 
@@ -35,11 +35,11 @@
      stage('k8s') {
        steps{
          withKubeConfig(
-           clusterName: env.K8_CLUSTER_NAME,
-           contextName: env.K8_CLUSTER_CONTEXT,
+           clusterName: env.K8S_CLUSTER_NAME,
+           contextName: env.K8S_CLUSTER_CONTEXT,
            credentialsId: 'k8s-build-robot-token',
            namespace: '',
-           serverUrl: env.K8_SERVER_URL) {
+           serverUrl: env.K8S_SERVER_URL) {
              sh 'kubectl get pods'
            }
          }
