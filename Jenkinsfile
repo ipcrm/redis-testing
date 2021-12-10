@@ -35,7 +35,7 @@
        steps {
          script {
            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-access-token') {            
-             def newimage = docker.image("${env.IMAGE_NAME}:${env.BUILD_NUMBER}")            
+             def newImage = docker.image("${env.IMAGE_NAME}:${env.BUILD_NUMBER}")            
              newImage.push()
              newImage.push("latest")
            }
