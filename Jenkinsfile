@@ -20,7 +20,7 @@
      stage('build and push') {
        steps {
          script {
-           def customImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}")
+           docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}")
          }
        }
      }
@@ -35,8 +35,9 @@
        steps {
          script {
            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-access-token') {            
-             customImage.push("${env.BUILD_NUMBER}")            
-             customImage.push("latest")        
+             def newimage = docker.image("${env.IMAGE_NAME}:${env.BUILD_NUMBER}")            
+             newImage.push()
+             newImage.push("latest")
            }
          }
        }    
