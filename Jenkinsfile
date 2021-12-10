@@ -8,7 +8,7 @@
      K8S_CLUSTER_NAME = credentials('k8s-cluster-name')
      K8S_CLUSTER_CONTEXT = credentials('k8s-context-name')
      K8S_SERVER_URL = credentials('k8s-server-url')
-     IMAGE_NAME = "detcaccounts/redis"
+     IMAGE_NAME = "ipcrm/redis"
    }
 
    stages {
@@ -21,7 +21,6 @@
        steps {
          script {
            def customImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}")
-           //customImage.push()
          }
        }
      }
@@ -32,6 +31,14 @@
            sh "./lw-scanner image evaluate ${IMAGE_NAME} ${BUILD_ID} --build-id ${BUILD_ID} --build-plan ${JOB_NAME} --save"
        }
      }
+     stage('Push image') {
+       steps {
+         docker.withRegistry('https://registry.hub.docker.com', 'git') {            
+           customImage.push("${env.BUILD_NUMBER}")            
+           customImage.push("latest")        
+         }
+       }    
+     }
      stage('k8s') {
        steps{
          withKubeConfig(
@@ -40,7 +47,7 @@
            credentialsId: 'k8s-build-robot-token',
            namespace: '',
            serverUrl: env.K8S_SERVER_URL) {
-             sh 'kubectl get pods'
+             sh "cat ./deploy/redis.yml | TAG=${BUILD_ID} envsubst | kubectl apply -f -"
            }
          }
       }
