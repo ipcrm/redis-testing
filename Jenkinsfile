@@ -34,7 +34,7 @@
      stage('Push image') {
        steps {
          script {
-           docker.withRegistry('https://registry.hub.docker.com', 'git') {            
+           docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-access-token') {            
              customImage.push("${env.BUILD_NUMBER}")            
              customImage.push("latest")        
            }
