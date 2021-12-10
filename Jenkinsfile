@@ -33,9 +33,11 @@
      }
      stage('Push image') {
        steps {
-         docker.withRegistry('https://registry.hub.docker.com', 'git') {            
-           customImage.push("${env.BUILD_NUMBER}")            
-           customImage.push("latest")        
+         script {
+           docker.withRegistry('https://registry.hub.docker.com', 'git') {            
+             customImage.push("${env.BUILD_NUMBER}")            
+             customImage.push("latest")        
+           }
          }
        }    
      }
