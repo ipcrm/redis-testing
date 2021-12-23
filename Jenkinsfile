@@ -28,7 +28,7 @@
        steps {
            sh "curl -L https://github.com/lacework/lacework-vulnerability-scanner/releases/latest/download/lw-scanner-linux-amd64 -o lw-scanner"
            sh "chmod +x lw-scanner"
-           sh "./lw-scanner image evaluate ${IMAGE_NAME} ${BUILD_ID} --build-id ${BUILD_ID} --build-plan ${JOB_NAME} --save"
+           sh "./lw-scanner image evaluate ${IMAGE_NAME} ${GIT_COMMIT} --build-id ${BUILD_ID} --build-plan ${JOB_NAME} --save --html --html-file scanner-report.html"
        }
      }
      stage('Push image') {
@@ -55,5 +55,10 @@
          }
       }
    }
+   post {
+        always {
+            archiveArtifacts artifacts: 'report.html', fingerprint: true
+        }
+    }
 }
 
