@@ -9,7 +9,6 @@
      K8S_CLUSTER_CONTEXT = credentials('k8s-context-name')
      K8S_SERVER_URL = credentials('k8s-server-url')
      IMAGE_NAME = "ipcrm/redis"
-     GITCOMMIT="${sh(returnStdout: true, script: 'git rev-parse --short HEAD')}"
    }
 
    stages {
@@ -21,7 +20,7 @@
      stage('build and push') {
        steps {
          script {
-           docker.build("${env.IMAGE_NAME}:${env.GITCOMMIT}", ".")
+           docker.build("${env.IMAGE_NAME}:${env.GIT_COMMIT}")
          }
        }
      }
@@ -36,7 +35,7 @@
        steps {
          script {
            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-access-token') {            
-             def newImage = docker.image("${env.IMAGE_NAME}:${env.GITCOMMIT}")            
+             def newImage = docker.image("${env.IMAGE_NAME}:${env.GIT_COMMIT}")            
              newImage.push()
              newImage.push("latest")
            }
@@ -51,7 +50,7 @@
            credentialsId: 'k8s-build-robot-token',
            namespace: '',
            serverUrl: env.K8S_SERVER_URL) {
-             sh "cat ./deploy/redis.yml | TAG=${GITCOMMIT} envsubst | kubectl apply -f -"
+             sh "cat ./deploy/redis.yml | TAG=${GIT_COMMIT} envsubst | kubectl apply -f -"
            }
          }
       }
