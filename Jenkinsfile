@@ -57,7 +57,7 @@
    }
    post {
         always {
-            archiveArtifacts artifacts: 'report.html', fingerprint: true
+            archiveArtifacts artifacts: 'scanner-report.html', fingerprint: true
         }
     }
 }
