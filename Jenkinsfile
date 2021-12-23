@@ -21,7 +21,7 @@
      stage('build and push') {
        steps {
          script {
-           docker.build("${env.IMAGE_NAME}:${env.GITCOMMIT}")
+           docker.build("${env.IMAGE_NAME}:${env.GITCOMMIT}", "Dockerfile")
          }
        }
      }
