@@ -9,7 +9,7 @@
      K8S_CLUSTER_CONTEXT = credentials('k8s-context-name')
      K8S_SERVER_URL = credentials('k8s-server-url')
      IMAGE_NAME = "ipcrm/redis"
-     GITCOMMIT="${sh(returnStdout: true, script: 'git rev-parse HEAD')}"
+     GITCOMMIT="${sh(returnStdout: true, script: 'git rev-parse --short HEAD')}"
    }
 
    stages {
